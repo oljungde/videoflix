@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, computed, effect, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
-import { first, firstValueFrom } from 'rxjs';
+import { first, firstValueFrom, lastValueFrom } from 'rxjs';
 import { ENVIRONMENT } from '../../../../environments/environment';
 import { User } from '../interfaces/user.interface';
 
@@ -15,6 +15,7 @@ export class AuthService {
     #userSignal = signal<User | null>(null);
     user = this.#userSignal.asReadonly();
     isLoggedIn = computed(() => !!this.user());
+    googleLoginUrl = `${this.environment.apiUrl}/auth/google`;
 
     // constructor() {
     //     this.loadUserFromStorage();
@@ -40,8 +41,17 @@ export class AuthService {
 
     async registerUser(registerData: { email: string; password1: string; password2: string }) {
         const REGISTER_RESPONSE = this.http.post<User>(`${this.environment.apiUrl}/auth/register/`, registerData);
-        const REG = await firstValueFrom(REGISTER_RESPONSE);
+        const REG = await lastValueFrom(REGISTER_RESPONSE);
         console.log('Register response: ', REG);
         return REG;
+    }
+
+    async loginUser(loginData: { email: string; password: string }) {
+        console.log('trigger login in service');
+        const LOGIN_RESPONSE = this.http.post<User>(`${this.environment.apiUrl}/auth/login/`, loginData);
+        const LOGIN = await lastValueFrom(LOGIN_RESPONSE);
+        console.log('Login response: ', LOGIN);
+        // this.#userSignal.set(LOGIN);
+        return LOGIN;
     }
 }
