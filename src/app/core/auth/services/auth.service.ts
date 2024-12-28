@@ -26,7 +26,6 @@ export class AuthService {
     }
 
     getTokensFromUrl() {
-        debugger;
         this.route.queryParams.subscribe((params) => {
             const REFRESH_TOKEN = params['refresh_token'];
             const ACCESS_TOKEN = params['access_token'];
