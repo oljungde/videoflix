@@ -1,9 +1,9 @@
 import { Routes } from '@angular/router';
 import { IS_USER_AUTHENTICATED } from './core/auth/guards/auth.guard';
+import { ConfirmAccountComponent } from './core/pages/confirm-account/confirm-account.component';
 import { LoginComponent } from './core/pages/login/login.component';
 import { RegisterComponent } from './core/pages/register/register.component';
 import { DashboardComponent } from './modules/dashboard/dashboard.component';
-import { ConfirmAccountComponent } from './core/pages/confirm-account/confirm-account.component';
 
 export const ROUTES: Routes = [
     {

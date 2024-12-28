@@ -17,6 +17,11 @@ export class LoginComponent {
 
     ngOnInit() {
         this.authService.getTokensFromUrl();
+        const ACCESS_TOKEN = localStorage.getItem('access_token');
+        console.log(ACCESS_TOKEN);
+        if (ACCESS_TOKEN) {
+            console.log('User is already logged in');
+        }
     }
 
     async onSubmit() {

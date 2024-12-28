@@ -1,12 +1,11 @@
 import { inject } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivateFn, Router, RouterStateSnapshot } from '@angular/router';
-import { AuthService } from '../services/auth.service';
 
 export const IS_USER_AUTHENTICATED: CanActivateFn = (_route: ActivatedRouteSnapshot, _state: RouterStateSnapshot) => {
-    const AUTH_SERVICE = inject(AuthService);
     const ROUTER = inject(Router);
+    const ACCESS_TOKEN = localStorage.getItem('access_token');
 
-    if (AUTH_SERVICE.user()) {
+    if (ACCESS_TOKEN) {
         return true;
     } else {
         return ROUTER.parseUrl('/login');

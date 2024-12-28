@@ -16,16 +16,7 @@ export class AuthService {
     #userSignal = signal<User | null>(null);
     user = this.#userSignal.asReadonly();
 
-    async ngOnInit() {
-        this.getTokensFromUrl();
-        const USER = localStorage.getItem('access_token');
-        if (USER) {
-            // this.#userSignal.set(USER);
-            // this.router.navigate(['/dashboard']);
-        }
-    }
-
-    getTokensFromUrl() {
+    async getTokensFromUrl() {
         this.route.queryParams.subscribe((params) => {
             const REFRESH_TOKEN = params['refresh_token'];
             const ACCESS_TOKEN = params['access_token'];
@@ -34,11 +25,20 @@ export class AuthService {
             }
             if (ACCESS_TOKEN) {
                 localStorage.setItem('access_token', ACCESS_TOKEN);
-            }
-            if (ACCESS_TOKEN) {
-                this.router.navigate(['/dashboard']);
+                this.router.navigate(['dashboard']);
             }
         });
+        // await this.getUser();
+    }
+
+    async getUser() {
+        debugger;
+        const USER_RESPONSE = this.http.get<User>(`${this.environment.apiUrl}/auth/user/`);
+        const USER = await firstValueFrom(USER_RESPONSE);
+        this.#userSignal.set(USER);
+        console.log(USER);
+        console.log('user signal', this.user());
+        return USER;
     }
 
     async registerUser(registerData: { email: string; password1: string; password2: string }) {
