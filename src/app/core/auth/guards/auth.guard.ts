@@ -6,7 +6,7 @@ export const IS_USER_AUTHENTICATED: CanActivateFn = (_route: ActivatedRouteSnaps
     const AUTH_SERVICE = inject(AuthService);
     const ROUTER = inject(Router);
 
-    if (AUTH_SERVICE.isLoggedIn()) {
+    if (AUTH_SERVICE.user()) {
         return true;
     } else {
         return ROUTER.parseUrl('/login');

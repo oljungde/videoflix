@@ -1,6 +1,7 @@
 import { Component, ViewChild, inject } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { Router } from '@angular/router';
 import { AuthService } from '../../auth/services/auth.service';
 
 @Component({
@@ -12,14 +13,18 @@ import { AuthService } from '../../auth/services/auth.service';
 export class LoginComponent {
     @ViewChild('loginForm') loginForm?: NgForm;
     authService = inject(AuthService);
+    router = inject(Router);
+
+    ngOnInit() {
+        this.authService.getTokensFromUrl();
+    }
 
     async onSubmit() {
-        console.log('Login');
         const LOGIN_DATA = {
             email: this.loginForm?.value.email,
             password: this.loginForm?.value.password,
         };
-        console.log('login data: ', LOGIN_DATA);
         await this.authService.loginUser(LOGIN_DATA);
+        this.router.navigate(['dashboard']);
     }
 }
